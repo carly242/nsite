@@ -30,7 +30,7 @@
                 {% csrf_token %}
                 {{ form.as_p }}
                 <input type="submit" {% if request.path == '/new' %} value="Add" {% else %} value="Actualiser" {% endif %} class="btn btn-success"/>
-                <a href="{% url 'home' %}"><button type="button" class="btn btn-secondary">Retour</button></a>
+                <a href="{% url 'profile' user.slug %}"><button type="button" class="btn btn-secondary">Retour</button></a>
             </form>
         </div>
     </div>

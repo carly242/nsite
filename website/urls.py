@@ -1,15 +1,16 @@
 from django.urls import path, include
 
 from .views import *
-from .views import connect
+from .views import connect, connect, deconnect, create, signup
 from django.contrib.auth.views import PasswordResetDoneView, PasswordResetConfirmView, PasswordResetCompleteView, PasswordResetView
+from .views import connect, connect, deconnect, create, signup
 urlpatterns =[
     
-     path('connect/', connxeion, name='connect'),
+     path('', connxeion, name='connect'),
      path('Connected/', connect, name='Connected'),
      path('deconnect/', deconnect, name='deconnect'),
-     path('signup/', create, name='signup'),
-     path('signedup/', signup, name='signedup'),
+     path('create/', create, name='create'),
+     path('created/', signup, name='created'),
      path('oublier_pass/', PasswordResetView.as_view(template_name='dashboard/password_reset_form.html',
         email_template_name='dashboard/password_reset_email.html',
         success_url='/mail_envoye/'
@@ -38,27 +39,27 @@ urlpatterns =[
      
       # Publisher URL's
      path('client/', client, name='client'),
-     path('menu/', Menu, name='menu'),
-     path('trans/', Transport, name='trans'),
-     path('finance/', Finance, name='finance'),
+     path('menu//<slug:slug>/', Menu, name='menu'),
+     path('trans/<slug:slug>', Transport, name='trans'),
+     path('finance/<slug:slug>', Finance, name='finance'),
 
-     path('', view_profile, name='home'),
-     path('profile/edit/', edit_profile, name='edit_profile'),
+     path('profile/<slug:slug>/', view_profile, name='profile'),
+     path('/edit/<slug:slug>/', edit_profile, name='edit_profile'),
      path('profile/<slug:slug>/', view_profile_changed, name='profile_changed'),
-     path('modifier', login_or_edit_profile, name='modifier'),
+     path('modifier/<slug:slug>/', login_or_edit_profile, name='modifier'),
       path('building', PageBuilding, name='building'),
      path('fonctionnalite', login_or_functions, name='fonctionnalite'),
-     path('checkpass', check_password_for_fonctionnalite, name='checkpass'),
-     path('checkmenu', check_password_for_menu, name='checkmenu'),
-     path('testify', check_pass, name='testify'),
+     path('checkpass/<slug:slug>/', check_password_for_fonctionnalite, name='checkpass'),
+     path('check_password_for_menu/<slug:slug>/', check_password_for_menu, name='checkmenu'),
+     path('testify/<slug:slug>/', check_pass, name='testify'),
 
      
      
-     path('aabook_form/', aabook_form, name='aabook_form'),
-     path('aabook/', aabook, name='aabook'),
-     path('albook/', ABookListView.as_view(), name='albook'),
+     path('aabook_form/<slug:slug>', aabook_form, name='aabook_form'),
+     path('aabook/<slug:slug>', aabook, name='aabook'),
+     path('albook/<slug:slug>', ABookListView.as_view(), name='albook'),
      path('aepro/<int:pk>', AeditView.as_view(), name='aepro'),
-     path('ambook/', AManageBook.as_view(), name='ambook'),
+     path('ambook/<slug:slug>', AManageBook.as_view(), name='ambook'),
      path('adbook/<int:pk>', ADeleteBook.as_view(), name='adbook'),
      path('aedoc/<int:pk>', AeditDocView.as_view(), name='aedoc'),
 

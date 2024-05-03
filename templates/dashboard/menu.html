@@ -130,6 +130,15 @@
                             {% endif %}
                         </a>
                     </li>
+                    <li class="nav-item">
+                      <a class="nav-link" href="changer_pass" style="color: aliceblue;"> 
+                          {% if user.is_authenticated %}
+                          Changer le mot de passe
+                       {% else %}
+                           Connectez Vous
+                       {% endif %}
+                          </a>
+                  </li>
                 </ul>
             </div>
         </div>
@@ -170,7 +179,7 @@
                 <h6>Finances</h6>
                 <hr>
                 <div class="btn-group">
-                    <a href="{% url 'finance' %}" class="btn btn-sm btn-outline-secondary">Voir Plus</a>
+                    <a href="{% url 'finance' user.slug %}" class="btn btn-sm btn-outline-secondary">Voir Plus</a>
                 </div>
             </div>
         </div>
@@ -182,7 +191,7 @@
                     <h6>Transport</h6>
                     <hr>
                     <div class="btn-group">
-                        <a href="{% url 'trans' %}" class="btn btn-sm btn-outline-secondary">Voir Plus</a>
+                        <a href="{% url 'trans' user.slug %}" class="btn btn-sm btn-outline-secondary">Voir Plus</a>
                     </div>
                 </div>
             </div>
@@ -194,7 +203,7 @@
                     <h6>Documents</h6>
                     <hr>
                     <div class="btn-group">
-                        <a href="{% url 'albook' %}" class="btn btn-sm btn-outline-secondary">Voir Plus</a>
+                        <a href="{% url 'albook'  user.slug %}" class="btn btn-sm btn-outline-secondary">Voir Plus</a>
                     </div>
                 </div>
             </div>
@@ -243,7 +252,7 @@
 <footer class="text-body-secondary py-5">
   <div class="container">
     <p class="float-end mb-1">
-      <a href="{% url 'home' %}"> Profil</a>
+      <a href="{% url 'profile' user.slug %}"> Profil</a>
     </p>
     <p class="mb-1"><a href="{% url 'deconnect' %}"><button type="button" class="btn btn-secondary">Deconnexion</button></a></p>
   </div>
