@@ -74,12 +74,12 @@ def registerView(request):
         # Vérifier si un utilisateur avec le même nom d'utilisateur existe déjà
         if User.objects.filter(username=username).exists():
             messages.error(request, "Ce nom d'utilisateur existe déjà.")
-            return redirect('register')
+            return redirect('signedup')
         
         # Vérifier si un utilisateur avec la même adresse e-mail existe déjà
         if User.objects.filter(email=email).exists():
             messages.error(request, "Cette adresse e-mail est déjà utilisée.")
-            return redirect('register')
+            return redirect('signedup')
 
         # Créer un nouvel utilisateur en utilisant le gestionnaire personnalisé
         user = User.objects.create_user(username=username, email=email, password=password)
