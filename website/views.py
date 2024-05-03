@@ -26,7 +26,7 @@ from django.shortcuts import render
 
 
 # Shared Views
-def login_form(request):
+def connxeion(request):
 	return render(request, 'connexion/login.html')
 
 
@@ -65,7 +65,7 @@ def deconnect(request):
     # Rediriger l'utilisateur vers la page d'accueil après la déconnexion
     return redirect('home')
 
-def registerView(request):
+def signup(request):
     if request.method == 'POST':
         username = request.POST['username']
         email = request.POST['email']
@@ -88,7 +88,7 @@ def registerView(request):
         return redirect('login')
     else:
         return render(request, 'connexion/signup.html')
-def register_form(request):
+def create(request):
 	return render(request, 'connexion/signup.html')
 
 

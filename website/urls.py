@@ -5,11 +5,11 @@ from .views import connect
 from django.contrib.auth.views import PasswordResetDoneView, PasswordResetConfirmView, PasswordResetCompleteView, PasswordResetView
 urlpatterns =[
     
-     path('connect/', login_form, name='connect'),
+     path('connect/', connxeion, name='connect'),
      path('Connected/', connect, name='Connected'),
      path('deconnect/', deconnect, name='deconnect'),
-     path('signup/', register_form, name='signup'),
-     path('signedup/', registerView, name='signedup'),
+     path('signup/', create, name='signup'),
+     path('signedup/', signup, name='signedup'),
      path('oublier_pass/', PasswordResetView.as_view(template_name='dashboard/password_reset_form.html',
         email_template_name='dashboard/password_reset_email.html',
         success_url='/mail_envoye/'
