@@ -40,23 +40,18 @@ def connect(request):
         password = request.POST['password']
         user = authenticate(request, username=username, password=password)
         if user is not None and user.is_active:
-            auth.login(request, user)
+            login(request, user)
             if 'first_login' not in request.session:
-                # Stockez un indicateur dans la session de l'utilisateur pour marquer la première connexion
                 request.session['first_login'] = True
             if user.is_admin or user.is_superuser:
                 return redirect('admin') 
             else:
                 return redirect('profile', slug=user.slug)
         else:
-            # Afficher un message d'erreur si le nom d'utilisateur ou le mot de passe est incorrect
             messages.error(request, "Nom d'utilisateur ou mot de passe incorrect.")
     else:
-        # Vérifiez si l'utilisateur est déjà connecté
         if request.user.is_authenticated:
-            # Redirigez l'utilisateur vers la page d'accueil ou une autre page pertinente
-            return redirect( 'profile', slug=user.slug)
-    # Afficher la page de connexion en cas de méthode GET ou si l'authentification a échoué
+            return redirect('profile', slug=request.user.slug)  # Redirige l'utilisateur connecté vers son profil
     return render(request, 'connexion/login.html')
 
 
@@ -65,31 +60,29 @@ def deconnect(request):
     # Rediriger l'utilisateur vers la page d'accueil après la déconnexion
     return redirect('home')
 
+def create(request):
+    return render(request, 'connexion/signup.html')
+
 def signup(request):
     if request.method == 'POST':
         username = request.POST['username']
         email = request.POST['email']
         password = request.POST['password']
         
-        # Vérifier si un utilisateur avec le même nom d'utilisateur existe déjà
         if User.objects.filter(username=username).exists():
             messages.error(request, "Ce nom d'utilisateur existe déjà.")
             return redirect('created')
         
-        # Vérifier si un utilisateur avec la même adresse e-mail existe déjà
         if User.objects.filter(email=email).exists():
             messages.error(request, "Cette adresse e-mail est déjà utilisée.")
             return redirect('created')
 
-        # Créer un nouvel utilisateur en utilisant le gestionnaire personnalisé
         user = User.objects.create_user(username=username, email=email, password=password)
 
         messages.success(request, 'Compte créé avec succès.')
         return redirect('connect')
     else:
         return render(request, 'connexion/signup.html')
-def create(request):
-	return render(request, 'connexion/signup.html')
 
 
 
@@ -132,17 +125,12 @@ def view_profile(request, slug):
     return render(request, 'dashboard/index.html', {'user_profile': user_profile})
 
 
-def view_profile_changed(request, slug):
-    # Récupérer le profil de l'utilisateur correspondant au nom d'utilisateur passé dans l'URL
-     user_profile = get_object_or_404(User, slug=slug)
 
-    # Passer le profil récupéré à votre modèle de rendu
-     return render(request, 'dashboard/index.html', {'user_profile': user_profile})
 
 
 @login_required
-def edit_profile(request, slug):
-    user_profile = get_object_or_404(User, slug=slug)
+def edit_profile(request):
+    user_profile = request.user
     if request.method == 'POST':
         form = UserForm(request.POST, request.FILES, instance=user_profile)
         if form.is_valid():
@@ -169,42 +157,40 @@ def edit_profile(request, slug):
 
 
 
-def login_or_edit_profile(request, slug):
+def login_or_edit_profile(request):
     if request.user.is_authenticated:
-        user = get_object_or_404(User, slug=slug)
         if 'first_login' in request.session:
             # Si l'utilisateur s'est déjà connecté avec succès mais n'est pas un nouvel utilisateur,
             # redirigez-le vers la page où il doit saisir son mot de passe pour accéder aux fonctionnalités supplémentaires.
-            return redirect(reverse('testify', kwargs={'slug': user.slug}))
+            return redirect(reverse('testify'))
         else:
             # Si c'est la première connexion réussie, redirigez-le directement vers la page de modification de profil.
-            return redirect(reverse('edit_profile', slug=user.slug))
+            return redirect(reverse('edit_profile'))
     else:
         # Si l'utilisateur n'est pas connecté du tout, redirigez-le vers la page de connexion.
         return redirect('connect')
 
 
-def login_or_functions(request, slug):
+def login_or_functions(request):
     if request.user.is_authenticated:
-        user= get_object_or_404(User, slug=slug)
         if 'first_login' in request.session:
             # Si l'utilisateur s'est déjà connecté avec succès mais n'est pas un nouvel utilisateur,
             # redirigez-le vers la page où il doit saisir son mot de passe pour accéder aux fonctionnalités supplémentaires.
-            return redirect(reverse('testify', slug=user.slug))
+            return redirect(reverse('testify'))
         else:
             # Si c'est la première connexion réussie, redirigez-le directement vers la page de modification de profil.
-            return redirect(reverse('fonctionalite', slug=user.slug))
+            return redirect(reverse('fonctionalite'))
     else:
         # Si l'utilisateur n'est pas connecté du tout, redirigez-le vers la page de connexion.
         return redirect('connect')
 
 
-def check_password_for_fonctionnalite(request, slug):
+def check_password_for_fonctionnalite(request):
     if request.method == 'POST':
         entered_password = request.POST.get('password')
-        user = get_object_or_404(User, slug=slug)
+        user = request.user
         if user.check_password(entered_password):
-            return redirect('edit_profile', slug=user.slug)  # Redirige vers les fonctionnalités supplémentaires si le mot de passe est correct
+            return redirect('edit_profile')  # Redirige vers les fonctionnalités supplémentaires si le mot de passe est correct
         else:
             # Afficher un message d'erreur si le mot de passe est incorrect
             return render(request, 'dashboard/incorrect_pass.html')
@@ -212,12 +198,12 @@ def check_password_for_fonctionnalite(request, slug):
         # Afficher le formulaire de saisie du mot de passe
         return render(request, 'dashboard/checkpass.html')
     
-def check_password_for_menu(request, slug):
+def check_password_for_menu(request):
     if request.method == 'POST':
         entered_password = request.POST.get('password')
-        user = get_object_or_404(User, slug=slug)
+        user = request.user
         if user.check_password(entered_password):
-            return redirect('menu', slug=user.slug )  # Redirige vers les fonctionnalités supplémentaires si le mot de passe est correct
+            return redirect('menu')  # Redirige vers les fonctionnalités supplémentaires si le mot de passe est correct
         else:
             # Afficher un message d'erreur si le mot de passe est incorrect
             return render(request, 'dashboard/incorrect_pass.html')
@@ -227,7 +213,7 @@ def check_password_for_menu(request, slug):
 
 
 
-def check_pass(request, slug=None):
+def check_pass(request):
     return render(request,'dashboard/checkpass.html' )
 
 
@@ -249,14 +235,13 @@ def password_change_done(request):
 
 
 @login_required
-def aabook_form(request, slug):
+def aabook_form(request):
 	return render(request, 'dashboard/add_pdf.html')
 
 
 
 @login_required
-def aabook(request, slug=None):
-    user = get_object_or_404(User, slug=slug)
+def aabook(request):
     if request.method == 'POST':
         title = request.POST.get('title')
         pdf = request.FILES.get('pdf')
@@ -266,12 +251,11 @@ def aabook(request, slug=None):
         document = Document(title=title, pdf=pdf, user=current_user)
         document.save()
         
-        
         messages.success(request, 'Ajout réussi')
-        return redirect('albook' ,slug=user.slug)  # Rediriger vers la liste des documents après ajout
+        return redirect('albook')  # Rediriger vers la liste des documents après ajout
     else:
         messages.error(request, 'Erreur lors de l\'ajout du document')
-        return redirect('aabook_form' , slug=user.slug)  # Rediriger vers le formulaire d'ajout de document en cas d'erreur
+        return redirect('aabook_form')  # Rediriger vers le formulaire d'ajout de document en cas d'erreur
 
  
  
@@ -311,19 +295,23 @@ class AeditView(LoginRequiredMixin, UpdateView):
     
 
 @login_required
-def Menu(request, slug):
+def Menu(request):
 	return render(request, 'dashboard/menu.html')
 
 
-
+def login_or_menu(request):
+    if request.user.is_authenticated:
+        return redirect(reverse('menu'))
+    else:
+        return redirect('connect')
 
 @login_required
-def Transport(request, slug):
+def Transport(request):
 	return render(request, 'dashboard/transport.html')
 
 
 @login_required
-def Finance(request, slug):
+def Finance(request):
 	return render(request, 'dashboard/finances.html')
 
 

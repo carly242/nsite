@@ -12,6 +12,10 @@ from django.utils.text import slugify
 
 
 #class pour les utilisateurs 
+from django.db import models
+from django.contrib.auth.models import AbstractUser
+from django.utils.text import slugify
+
 class User(AbstractUser):
     is_admin = models.BooleanField(default=False)
     is_client = models.BooleanField(default=False)
@@ -20,23 +24,28 @@ class User(AbstractUser):
     function = models.CharField(max_length=100, null=True, default="your name")
     email = models.CharField(max_length=100, null=True, default="email")
     email_bureau = models.CharField(max_length=100, null=True, default="office number")
-    city = models.CharField(max_length=100, null=True, default="adress")
+    city = models.CharField(max_length=100, null=True, default="address")
     phone_number = models.CharField(max_length=100, null=True, default="your name")
     office_number = models.CharField(max_length=100, null=True, default="office mail")
     website = models.CharField(max_length=500, blank=True, null=True, default="website")
     
-    
     slug = models.SlugField(unique=True, blank=True)
 
     def save(self, *args, **kwargs):
-        # Générer le slug à partir du nom d'utilisateur
         if not self.slug:
-            self.slug = slugify(self.username)
+            # Générer un slug unique en ajoutant un identifiant unique au nom d'utilisateur si nécessaire
+            base_slug = slugify(self.username)
+            unique_slug = base_slug
+            counter = 1
+            while User.objects.filter(slug=unique_slug).exists():
+                unique_slug = f"{base_slug}-{counter}"
+                counter += 1
+            self.slug = unique_slug
         super().save(*args, **kwargs)
-    
 
     def __str__(self):
         return self.name
+
 
 
 

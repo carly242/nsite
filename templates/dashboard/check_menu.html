@@ -10,7 +10,7 @@
 <div class="container">
     <h2>Entrer Votre mot de Passe</h2>
     <p>Please enter your password to access additional features.</p>
-    <form id="password-form" method="POST" action="{% url 'checkmenu' user.slug %}">
+    <form id="password-form" method="POST" action="{% url 'checkmenu'  %}">
         {% csrf_token %}
         <div class="form-group">
             <input type="password" id="password" name="password" placeholder="Password">

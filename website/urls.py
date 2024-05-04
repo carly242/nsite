@@ -39,27 +39,26 @@ urlpatterns =[
      
       # Publisher URL's
      path('client/', client, name='client'),
-     path('menu//<slug:slug>/', Menu, name='menu'),
-     path('trans/<slug:slug>', Transport, name='trans'),
-     path('finance/<slug:slug>', Finance, name='finance'),
+     path('menu/', Menu, name='menu'),
+     path('trans/', Transport, name='trans'),
+     path('finance/', Finance, name='finance'),
 
      path('profile/<slug:slug>/', view_profile, name='profile'),
-     path('/edit/<slug:slug>/', edit_profile, name='edit_profile'),
-     path('profile/<slug:slug>/', view_profile_changed, name='profile_changed'),
-     path('modifier/<slug:slug>/', login_or_edit_profile, name='modifier'),
+     path('edit/profil/', edit_profile, name='edit_profile'),
+     path('modifier', login_or_edit_profile, name='modifier'),
       path('building', PageBuilding, name='building'),
      path('fonctionnalite', login_or_functions, name='fonctionnalite'),
-     path('checkpass/<slug:slug>/', check_password_for_fonctionnalite, name='checkpass'),
-     path('check_password_for_menu/<slug:slug>/', check_password_for_menu, name='checkmenu'),
-     path('testify/<slug:slug>/', check_pass, name='testify'),
+     path('checkpass', check_password_for_fonctionnalite, name='checkpass'),
+     path('checkmenu', check_password_for_menu, name='checkmenu'),
+     path('testify', check_pass, name='testify'),
 
      
      
-     path('aabook_form/<slug:slug>', aabook_form, name='aabook_form'),
-     path('aabook/<slug:slug>', aabook, name='aabook'),
-     path('albook/<slug:slug>', ABookListView.as_view(), name='albook'),
+     path('aabook_form/', aabook_form, name='aabook_form'),
+     path('aabook/', aabook, name='aabook'),
+     path('albook/', ABookListView.as_view(), name='albook'),
      path('aepro/<int:pk>', AeditView.as_view(), name='aepro'),
-     path('ambook/<slug:slug>', AManageBook.as_view(), name='ambook'),
+     path('ambook/', AManageBook.as_view(), name='ambook'),
      path('adbook/<int:pk>', ADeleteBook.as_view(), name='adbook'),
      path('aedoc/<int:pk>', AeditDocView.as_view(), name='aedoc'),
 
