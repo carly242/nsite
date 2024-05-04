@@ -3,11 +3,10 @@
 
 {% block content %}
 
-
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <link rel="stylesheet" href="./style.css">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}"> <!-- Assurez-vous que le chemin vers votre fichier CSS est correct -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css">
     <title>W.01</title>
@@ -15,42 +14,42 @@
 <body>
     <div class="card">
         <div class="header">
-            <img src="{% if user.photo %}{{ user.photo.url }}{% else %}{% static 'image/User.png' %}{% endif %}">
-            <h3>{{ user.name |default:"Your Name"}}</h3>
-            <p>{{ user.function |default:"Function"}}</p>
+            <img src="{% if user_profile.photo %}{{ user_profile.photo.url }}{% else %}{% static 'image/User.png' %}{% endif %}">
+            <h3>{{ user_profile.name |default:"Your Name"}}</h3>
+            <p>{{ user_profile.function |default:"Function"}}</p>
         </div>
         <div class="body">
             <ul>
                 
                 <li>
-                    <h3> {{ user.phone_number|default:"Your Moblie Number" }}</h3>
+                    <h3> {{ user_profile.phone_number|default:"Your Moblie Number" }}</h3>
                     <p>Mobile number</p>
                     <i class="fas fa-mobile-alt"></i>
 
                 </li>
                 <li>
-                    <h3> {{ user.office_number|default:"None" }}</h3>
+                    <h3> {{ user_profile.office_number|default:"None" }}</h3>
                     <p>Office number</p>
                     <i class="fas fa-mobile-alt"></i>
 
                 </li>
                 <li>
-                    <h3>{{ user.email |default:"None"}}</h3>
+                    <h3>{{ user_profile.email |default:"None"}}</h3>
                     <p>Email address</p>
                     <i class="fas fa-envelope"></i>
                 </li>
                 <li>
-                    <h3>{{ user.email_bureau |default:"None"}}</h3>
+                    <h3>{{ user_profile.email_bureau |default:"None"}}</h3>
                     <p>Email address</p>
                     <i class="fas fa-envelope"></i>
                 </li>
                 <li>
-                    <h3>{{ user.city |default:"None"}}</h3>
+                    <h3>{{ user_profile.city |default:"None"}}</h3>
                     <p>Adress</p>
                     <i class="fas fa-map-marker-alt"></i>
                 </li>
                 <li>
-                    <h3>{{ user.website |default:"None"}}</h3>
+                    <h3>{{ user_profile.website |default:"None"}}</h3>
                     <p>Website address</p>
                     <i class="fas fa-globe-americas"></i>
                 </li>

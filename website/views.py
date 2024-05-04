@@ -112,24 +112,13 @@ def client(request):
 
 
 
-def view_profile(request, slug):
-    user_profile = None
-    if 'user_slug' in request.session:
-        user_slug = request.session['user_slug']
-        user_profile = get_object_or_404(User, slug=user_slug)
+from django.shortcuts import get_object_or_404, render
+from .models import User
 
-    else:
-        user_profile = {
-            'name': 'Your Name',
-            'function': 'Function',
-            'email': 'your@mail.com',
-            'phone_number': 'Your Phone Number',
-            'city': 'Your City',
-            'website': 'Your Website',
-            
-        }
-        
+def view_profile(request, slug):
+    user_profile = get_object_or_404(User, slug=slug)
     return render(request, 'dashboard/index.html', {'user_profile': user_profile})
+
 
 
 
