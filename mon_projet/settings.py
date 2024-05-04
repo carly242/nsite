@@ -22,6 +22,7 @@ EMAIL_HOST_PASSWORD = 'pwhy adjn hagb zdhw'
 EMAIL_USE_TLS = True
 DEFAULT_FROM_EMAIL = 'carlybivihou8@gmail.com'
 
+SESSION_COOKIE_SECURE = True
 
 # Charger les variables d'environnement depuis le fichier .env
 

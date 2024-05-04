@@ -42,7 +42,10 @@ def connect(request):
         if user is not None and user.is_active:
             login(request, user)
             if 'first_login' not in request.session:
+                # Stockez un indicateur dans la session de l'utilisateur pour marquer la première connexion
                 request.session['first_login'] = True
+                # Stockez également le slug de l'utilisateur dans la session pour référence future
+                request.session['user_slug'] = user.slug
             if user.is_admin or user.is_superuser:
                 return redirect('admin') 
             else:
@@ -51,8 +54,10 @@ def connect(request):
             messages.error(request, "Nom d'utilisateur ou mot de passe incorrect.")
     else:
         if request.user.is_authenticated:
-            return redirect('profile', slug=request.user.slug)  # Redirige l'utilisateur connecté vers son profil
+            # Si l'utilisateur est déjà authentifié, redirigez-le vers son profil
+            return redirect('profile', slug=request.user.slug)
     return render(request, 'connexion/login.html')
+
 
 
 def deconnect(request):
@@ -109,8 +114,10 @@ def client(request):
 
 def view_profile(request, slug):
     user_profile = None
-    if request.user.is_authenticated:
-        user_profile = get_object_or_404(User, slug=slug)
+    if 'user_slug' in request.session:
+        user_slug = request.session['user_slug']
+        user_profile = get_object_or_404(User, slug=user_slug)
+
     else:
         user_profile = {
             'name': 'Your Name',
