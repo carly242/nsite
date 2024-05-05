@@ -9,14 +9,14 @@
 
 <div class="container">
     <h2>Entrer Votre mot de Passe</h2>
-    <p>Please enter your password to access additional features.</p>
+    <p>Veillez entrer votre mot de passe pour continuer s'il vous plait</p>
     <form id="password-form" method="POST" action="{% url 'checkmenu'  %}">
         {% csrf_token %}
         <div class="form-group">
             <input type="password" id="password" name="password" placeholder="Password">
             <span toggle="#password" class="toggle-password fa fa-eye"></span>
         </div>
-        <button type="submit">Submit</button>
+        <button type="submit">Envoyer</button>
     </form>
 </div>
 

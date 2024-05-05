@@ -20,14 +20,17 @@ input {
 }
 .logo-container {
   position: absolute;
-  top: 20px;
-  left: 20px;
+  top: 5%;
+  left: 10px;
+  margin-left: 200px;
+  transform: translate(-50%, -50%);
   z-index: 10;
 }
 
 .logo-container img {
-  width: 100px; /* Taille du logo */
+  max-width: 80%; /* Ajuster la taille du logo en pourcentage */
 }
+
 
 .forms-container {
   position: absolute;
@@ -375,6 +378,21 @@ form.sign-in-form {
     padding: 0 1.5rem;
   }
 
+  .logo-container {
+      position: static; /* Rétablir la position par défaut */
+      display: flex;
+      justify-content: flex-end; /* Aligner le contenu vers la droite */
+      margin-bottom: 20px; /* Ajouter de l'espace sous le logo */
+      margin-left: 270px;
+      margin-top: -150px;
+    }
+    
+   .logo-container img {
+      display: block; /* Assurez-vous que l'image est visible */
+      max-width: 270%; /* Ajuster la taille du logo en pourcentage */
+    }
+  
+  
   .image {
     display: none;
   }

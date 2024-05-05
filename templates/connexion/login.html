@@ -32,7 +32,7 @@
                     </div>                    
                     <input type="submit" value="Connect" class="btn "/>
                     Pas de compte?
-                    <a href="{% url 'create' %}" class="btn" style="width: 150px; background-color: #5995fd; border: none; outline: none; height: 49px; border-radius: 49px; color: #fff; text-transform: uppercase; font-weight: 600; margin: 5px 0; cursor: pointer; transition: 0.5s; text-align: center; text-decoration: none; margin-top: 10px">S'inscrire</a>
+                    <input type="button" value="S'inscrire" class="btn" onclick="window.location.href='{% url 'create' %}'" style="width: 150px; background-color: #5995fd; border: none; outline: none; height: 49px; border-radius: 49px; color: #fff; text-transform: uppercase; font-weight: 600; margin: 5px 0; cursor: pointer; transition: 0.5s; text-align: center; text-decoration: none; margin-top: 10px;">
 
                     <a href="{% url 'oublier_pass' %}">Mot de passe oublié ?</a>
 

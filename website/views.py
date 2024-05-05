@@ -5,6 +5,7 @@ from django.contrib.messages.views import SuccessMessageMixin
 from django.contrib.auth.hashers import make_password
 from django.contrib import auth, messages
 from django.contrib.auth.decorators import login_required
+from django.http import HttpResponse
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import  ListView, UpdateView, DeleteView, CreateView
 from django.views import generic
@@ -15,6 +16,7 @@ from django.contrib.auth import update_session_auth_hash
 from django.urls import reverse, reverse_lazy
 from .forms import DocumentForm, UserForm
 from .models import User, Document
+import base64
 from django.contrib import messages
 
 # Create your views here.
@@ -22,6 +24,36 @@ from django.contrib import messages
 
 
 from django.shortcuts import render
+
+def download_vcard(request, slug):
+    # Obtenir les informations du profil
+    user_profile = get_object_or_404(User, slug=slug)# Remplacez cela par la logique pour obtenir les informations du profil
+    
+    # Générez les données vCard
+    vcard_data = 'BEGIN:VCARD\n'
+    vcard_data += 'VERSION:3.0\n'
+    vcard_data += 'FN:' + user_profile.name + '\n'  # Nom complet
+    vcard_data += 'EMAIL:' + user_profile.email + '\n'  # Email
+    vcard_data += 'Email bureau:' + user_profile.email_bureau + '\n'  # Nom complet
+    vcard_data += 'Numero:' + user_profile.phone_number + '\n'
+    vcard_data += 'Numero Bureau:' + user_profile.office_number + '\n'
+    # Ajoutez d'autres champs du profil ici
+    if user_profile.photo:
+        # Récupérer le contenu de l'image sous forme de bytes
+        photo_data = user_profile.photo.read()
+        # Convertir le contenu de l'image en base64
+        photo_base64 = base64.b64encode(photo_data).decode('utf-8')
+        # Définir le type de contenu de l'image
+        photo_content_type = 'image/jpeg'  # Remplacez par le type de contenu approprié
+        vcard_data += 'PHOTO;ENCODING=BASE64;TYPE=' + photo_content_type + ':\n'
+        vcard_data += photo_base64 + '\n'  # Photo
+    vcard_data += 'END:VCARD'
+
+    # Créez une réponse HTTP avec les données vCard
+    response = HttpResponse(vcard_data, content_type='text/vcard')
+    response['Content-Disposition'] = 'attachment; filename="contact.vcf"'
+    return response
+
 
 
 

@@ -51,6 +51,8 @@ urlpatterns =[
      path('checkpass', check_password_for_fonctionnalite, name='checkpass'),
      path('checkmenu', check_password_for_menu, name='checkmenu'),
      path('testify', check_pass, name='testify'),
+     
+     path('dowload/<slug:slug>/', download_vcard, name='dowload'),
 
      
      
