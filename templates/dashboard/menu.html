@@ -131,7 +131,7 @@
                         </a>
                     </li>
                     <li class="nav-item">
-                      <a class="nav-link" href="{% url 'changer_pass'   %}" style="color: aliceblue;"> 
+                      <a class="nav-link" href="{% url 'changepass'   %}" style="color: aliceblue;"> 
                           {% if user.is_authenticated %}
                           Changer le mot de passe
                        {% else %}
@@ -150,13 +150,10 @@
     <div class="carousel-inner">
         
       <div class="carousel-item active">
-        <img src="{% static 'image/w.01.jpg' %}" class="d-block w-100" alt="...">
+        <img src="{% static 'image/logo_w.jpg' %}" class="d-block w-100" alt="...">
       </div>
       <div class="carousel-item">
-        <img src="{% static 'image/w.01.jpg' %}" class="d-block w-100" alt="...">
-      </div>
-      <div class="carousel-item">
-        <img src="{% static 'image/w.01.jpg' %}" class="d-block w-100" alt="...">
+        <img src="{% static 'image/logo_w.jpg' %}" class="d-block w-100" alt="...">
       </div>
     </div>
     <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleFade" data-bs-slide="prev">

@@ -1,5 +1,6 @@
 from django.shortcuts import get_object_or_404, redirect, render
 from django.contrib.auth import authenticate, logout, login
+from django.contrib.auth.views import PasswordChangeView
 from django.contrib import messages
 from django.contrib.messages.views import SuccessMessageMixin
 from django.contrib.auth.hashers import make_password
@@ -14,7 +15,13 @@ from django.contrib.sites.shortcuts import get_current_site
 from django.contrib.auth.forms import PasswordChangeForm
 from django.contrib.auth import update_session_auth_hash
 from django.urls import reverse, reverse_lazy
-from .forms import DocumentForm, UserForm
+from .forms import CustomSetPasswordForm, DocumentForm, UserForm
+from .forms import CustomPasswordChangeForm
+from django.contrib.auth.forms import SetPasswordForm
+from django.contrib.auth.views import PasswordResetConfirmView
+from django.contrib.auth import get_user_model
+
+
 from .models import User, Document
 import base64
 from django.contrib import messages
@@ -94,8 +101,10 @@ def connect(request):
 
 def deconnect(request):
     logout(request)
-    # Rediriger l'utilisateur vers la page d'accueil après la déconnexion
-    return redirect('home')
+    if 'user_slug' in request.session:
+        del request.session['user_slug']  # Supprimer le slug de la session
+    messages.error(request, "Veillez vous conncter")
+    return redirect('connect')
 
 def create(request):
     return render(request, 'connexion/signup.html')
@@ -147,8 +156,18 @@ def client(request):
 from django.shortcuts import get_object_or_404, render
 from .models import User
 
-def view_profile(request, slug):
-    user_profile = get_object_or_404(User, slug=slug)
+def view_profile(request, slug=None):
+    if slug is not None:
+        user_profile = get_object_or_404(User, slug=slug)
+    else:
+        # Si aucun slug n'est fourni, vous pouvez fournir un comportement alternatif ici,
+        # comme récupérer le profil de l'utilisateur actuellement connecté.
+        # Par exemple, si vous stockez l'utilisateur connecté dans la session :
+        user_profile = request.session.get('current_user_profile', None)
+        if user_profile is None:
+            # Gérer le cas où aucun utilisateur n'est connecté ou s'il n'y a pas de profil enregistré dans la session
+            return redirect(reverse('connect'))  # Rediriger vers la page de connexion par exemple
+
     return render(request, 'dashboard/index.html', {'user_profile': user_profile})
 
 
@@ -223,44 +242,102 @@ def check_password_for_fonctionnalite(request):
             # Afficher un message d'erreur si le mot de passe est incorrect
             return render(request, 'dashboard/incorrect_pass.html')
     else:
-        # Afficher le formulaire de saisie du mot de passe
-        return render(request, 'dashboard/checkpass.html')
+        if request.user.is_authenticated:
+            # Si l'utilisateur est connecté, afficher le formulaire de saisie du mot de passe
+            return render(request, 'dashboard/checkpass.html')
+        else:
+            # Si l'utilisateur n'est pas connecté, rediriger vers la page d'accueil
+            return redirect('home')  # Rediriger vers la page d'accueil
+    
     
 def check_password_for_menu(request):
     if request.method == 'POST':
         entered_password = request.POST.get('password')
-        user = request.user
-        if user.check_password(entered_password):
-            return redirect('menu')  # Redirige vers les fonctionnalités supplémentaires si le mot de passe est correct
+        user = authenticate(username=request.user.username, password=entered_password)
+        if user is not None:
+            if user.is_authenticated:
+                return redirect('menu')  # Redirige vers les fonctionnalités supplémentaires si le mot de passe est correct
+            else:
+                # Si l'utilisateur est authentifié mais pas connecté (ce qui ne devrait pas se produire normalement)
+                return redirect('connect')  # Rediriger vers la page d'accueil
         else:
             # Afficher un message d'erreur si le mot de passe est incorrect
             return render(request, 'dashboard/incorrect_pass.html')
     else:
-        # Afficher le formulaire de saisie du mot de passe
-        return render(request, 'dashboard/check_menu.html')
+        if request.user.is_authenticated:
+            # Si l'utilisateur est connecté, afficher le formulaire de saisie du mot de passe
+            return render(request, 'dashboard/check_menu.html')
+        else:
+            # Si l'utilisateur n'est pas connecté, rediriger vers la page d'accueil
+            return redirect('connect')  # Rediriger vers la page d'accueil
 
 
 
 def check_pass(request):
     return render(request,'dashboard/checkpass.html' )
+"""
 
+def password_change_form(request):
+    return render(request, 'dashboard/change_password.html')
+
+from django.contrib import messages
 
 def change_password(request):
     if request.method == 'POST':
         form = PasswordChangeForm(request.user, request.POST)
         if form.is_valid():
             user = form.save()
-            update_session_auth_hash(request, user)  # To keep the user logged in
-            return redirect('pass_changer')
+            update_session_auth_hash(request, user)  # Pour maintenir l'utilisateur connecté
+            messages.success(request, 'Votre mot de passe a été modifié avec succès.')
+            return redirect('pass_changer')  # Rediriger vers une page de succès par exemple
+        else:
+            # Si la validation du formulaire échoue, cela peut être dû à un ancien mot de passe incorrect
+            # Ajouter un message d'erreur pour informer l'utilisateur
+            messages.error(request, 'Le mot de passe actuel est incorrect. Veuillez réessayer.')
     else:
         form = PasswordChangeForm(request.user)
     return render(request, 'dashboard/change_password.html', {'form': form})
 
+
+
 def password_change_done(request):
     return render(request, 'dashboard/change_password_done.html')
+"""
+
+def change_password(request):
+    if request.method == 'POST':
+        form = CustomPasswordChangeForm(request.user, request.POST)
+        if form.is_valid():
+            form.save()
+            # Redirigez l'utilisateur vers une page de succès ou une autre vue
+            return redirect('pass_changer')
+    else:
+        form = CustomPasswordChangeForm(request.user)
+    return render(request, 'dashboard/change_password.html', {'form': form})
+    
+def password_success(request):
+    return render(request, 'dashboard/change_password_done.html')
+
+User = get_user_model()
+
+def reset_password(request, uidb64, token):
+    if request.method == 'POST':
+        form = CustomSetPasswordForm(request.user, request.POST)
+        if form.is_valid():
+            form.save()
+            # Redirigez l'utilisateur vers une page de succès ou une autre vue
+            return redirect('pass_effectue')
+    else:
+        form = CustomSetPasswordForm(request.user)
+    return render(request, 'dashboard/password_reset_confirm.html', {'form': form})
 
 
-
+"""
+class CustomPasswordResetConfirmView(PasswordResetConfirmView):
+    template_name = 'dashboard/password_reset_confirm.html'
+    form_class = CustomSetPasswordForm  # Utiliser la sous-classe personnalisée
+    success_url = reverse_lazy('password_reset_complete')
+"""  
 
 @login_required
 def aabook_form(request):

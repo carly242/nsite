@@ -23,6 +23,8 @@ EMAIL_USE_TLS = True
 DEFAULT_FROM_EMAIL = 'carlybivihou8@gmail.com'
 
 SESSION_COOKIE_SECURE = True
+SESSION_EXPIRE_AT_BROWSER_CLOSE = True
+
 
 # Charger les variables d'environnement depuis le fichier .env
 

@@ -11,20 +11,22 @@ urlpatterns =[
      path('deconnect/', deconnect, name='deconnect'),
      path('create/', create, name='create'),
      path('created/', signup, name='created'),
-     path('oublier_pass/', PasswordResetView.as_view(template_name='dashboard/password_reset_form.html',
+     path('oublier_pass/', PasswordResetView.as_view(
+        template_name='dashboard/password_reset_form.html',
         email_template_name='dashboard/password_reset_email.html',
         success_url='/mail_envoye/'
-    ), name='oublier_pass' ),
+        ), name='oublier_pass'),
+     
      path('mail_envoye/', PasswordResetDoneView.as_view( template_name='dashboard/password_reset_done.html'
     ), name='mail_envoye'),
-     path('reset/<uidb64>/<token>', PasswordResetConfirmView.as_view(template_name='dashboard/password_reset_confirm.html',
-        success_url='/password_reset_complete/'
-    ), name='confirme_pass'),
+     
+     path('reset/<uidb64>/<token>', reset_password, name='confirme_pass'),
+     
      path('pass_effectue/', PasswordResetCompleteView.as_view(template_name='dashboard/password_reset_complete.html'
     ), name='pass_effectue'),
 
-    path('changer_pass/', change_password, name='changer_pass'),
-    path('pass_changer', password_change_done, name='pass_changer'),
+    path('changepass/', change_password, name='changepass'),
+    path('pass_changer', password_success, name='pass_changer'),
      
       
     
