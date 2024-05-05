@@ -15,8 +15,7 @@ from django.contrib.sites.shortcuts import get_current_site
 from django.contrib.auth.forms import PasswordChangeForm
 from django.contrib.auth import update_session_auth_hash
 from django.urls import reverse, reverse_lazy
-from .forms import CustomSetPasswordForm, DocumentForm, UserForm
-from .forms import CustomPasswordChangeForm
+from .forms import DocumentForm, UserForm
 from django.contrib.auth.forms import SetPasswordForm
 from django.contrib.auth.views import PasswordResetConfirmView
 from django.contrib.auth import get_user_model
@@ -306,30 +305,46 @@ def password_change_done(request):
 
 def change_password(request):
     if request.method == 'POST':
-        form = CustomPasswordChangeForm(request.user, request.POST)
-        if form.is_valid():
-            form.save()
-            # Redirigez l'utilisateur vers une page de succès ou une autre vue
-            return redirect('pass_changer')
+        if request.user.is_authenticated:  # Vérifie si l'utilisateur est authentifié
+            form = PasswordChangeForm(request.user, request.POST)
+            if form.is_valid():
+                user = form.save()
+                update_session_auth_hash(request, user)
+                return redirect('pass_changer')
+        else:
+            return redirect('connect')  # Redirigez l'utilisateur non authentifié vers la page de connexion
     else:
-        form = CustomPasswordChangeForm(request.user)
+        form = PasswordChangeForm(request.user)
     return render(request, 'dashboard/change_password.html', {'form': form})
-    
+
+
+
 def password_success(request):
     return render(request, 'dashboard/change_password_done.html')
 
 User = get_user_model()
+from django.contrib import messages
 
 def reset_password(request, uidb64, token):
     if request.method == 'POST':
-        form = CustomSetPasswordForm(request.user, request.POST)
-        if form.is_valid():
-            form.save()
-            # Redirigez l'utilisateur vers une page de succès ou une autre vue
-            return redirect('pass_effectue')
+        if request.user.is_authenticated:  # Vérifie si l'utilisateur est authentifié
+            form = SetPasswordForm(request.user, request.POST)
+            if form.is_valid():
+                form.save()
+                # Mettre à jour le hachage d'authentification de la session utilisateur
+                update_session_auth_hash(request, request.user)
+                # Ajouter un message de succès
+                messages.success(request, "Votre mot de passe a été réinitialisé avec succès. Veuillez vous connecter avec le nouveau mot de passe.")
+                # Redirection vers la page de connexion
+                return redirect('pass_effectue')
+        else:
+            # Redirection de l'utilisateur non authentifié vers la page de connexion
+            
+            return redirect('connect')
     else:
-        form = CustomSetPasswordForm(request.user)
+        form = SetPasswordForm(request.user)
     return render(request, 'dashboard/password_reset_confirm.html', {'form': form})
+
 
 
 """

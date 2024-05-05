@@ -2,7 +2,7 @@ from django.urls import path, include
 
 from .views import *
 from .views import connect, connect, deconnect, create, signup
-from django.contrib.auth.views import PasswordResetDoneView, PasswordResetConfirmView, PasswordResetCompleteView, PasswordResetView
+from django.contrib.auth import views as auth_views 
 from .views import connect, connect, deconnect, create, signup
 urlpatterns =[
     
@@ -11,19 +11,16 @@ urlpatterns =[
      path('deconnect/', deconnect, name='deconnect'),
      path('create/', create, name='create'),
      path('created/', signup, name='created'),
-     path('oublier_pass/', PasswordResetView.as_view(
-        template_name='dashboard/password_reset_form.html',
-        email_template_name='dashboard/password_reset_email.html',
-        success_url='/mail_envoye/'
-        ), name='oublier_pass'),
+     path('password_reset/',auth_views.PasswordResetView.as_view(template_name='dashboard/password_reset_form.html', email_template_name='dashboard/password_reset_email.html'),name='password_reset'),
+
      
-     path('mail_envoye/', PasswordResetDoneView.as_view( template_name='dashboard/password_reset_done.html'
-    ), name='mail_envoye'),
+     path('mail_envoye/', auth_views.PasswordResetDoneView.as_view( template_name='dashboard/password_reset_done.html'
+    ), name='password_reset_done'),
      
-     path('reset/<uidb64>/<token>', reset_password, name='confirme_pass'),
+   path('reset/<uidb64>/<token>', auth_views.PasswordResetConfirmView.as_view(template_name='dashboard/password_reset_confirm.html'), name='password_reset_confirm'),
      
-     path('pass_effectue/', PasswordResetCompleteView.as_view(template_name='dashboard/password_reset_complete.html'
-    ), name='pass_effectue'),
+     path('reset/done/', auth_views.PasswordResetCompleteView.as_view(template_name='dashboard/password_reset_complete.html'
+    ), name='password_reset_complete'),
 
     path('changepass/', change_password, name='changepass'),
     path('pass_changer', password_success, name='pass_changer'),

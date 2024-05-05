@@ -383,13 +383,13 @@ form.sign-in-form {
       display: flex;
       justify-content: flex-end; /* Aligner le contenu vers la droite */
       margin-bottom: 20px; /* Ajouter de l'espace sous le logo */
-      margin-left: 290px;
+      margin-left: 250px;
       margin-top: -150px;
     }
     
    .logo-container img {
       display: block; /* Assurez-vous que l'image est visible */
-      max-width: 270%; /* Ajuster la taille du logo en pourcentage */
+      max-width: 250%; /* Ajuster la taille du logo en pourcentage */
     }
   
   
