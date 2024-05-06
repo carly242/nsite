@@ -69,6 +69,8 @@ urlpatterns =[
     path('create_user/', CreateUserView.as_view(), name='create_user'),
     path('wluser/', ListUserView.as_view(), name='wluser'),
     path('aeuser/<int:pk>', AEditUser.as_view(), name='aeuser'),
+     path('aduser/<int:pk>', ADeleteUser.as_view(), name='aduser'),
+
 
 
 ]

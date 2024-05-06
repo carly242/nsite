@@ -552,3 +552,10 @@ class AEditUser(SuccessMessageMixin, UpdateView):
     template_name = 'admin/edit_user.html'
     success_url = reverse_lazy('wluser')
     success_message = "Data successfully updated"
+    
+
+class ADeleteUser(SuccessMessageMixin, DeleteView):
+    model = User
+    template_name='admin/delete_user.html'
+    success_url = reverse_lazy('wluser')
+    success_message = "Data successfully deleted"

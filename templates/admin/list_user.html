@@ -64,7 +64,7 @@
                 <a href="{% url 'aeuser' user.pk %}"><button type="button" class="btn btn-warning"> Edit</button></a>
         </td>
         <td>
-          <a href=""><button type="button" class="btn btn-danger"> Delete</button></a></td>
+          <a href="{% url 'aduser' user.pk %}"><button type="button" class="btn btn-danger"> Delete</button></a></td>
                                 </tr>
                             {% endfor %}
                         {% endif %}
