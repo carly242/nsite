@@ -249,17 +249,12 @@ def check_password_for_fonctionnalite(request):
             # Si l'utilisateur n'est pas connecté, rediriger vers la page d'accueil
             return redirect('home')  # Rediriger vers la page d'accueil
     
-    
 def check_password_for_menu(request):
     if request.method == 'POST':
         entered_password = request.POST.get('password')
-        user = authenticate(username=request.user.username, password=entered_password)
-        if user is not None:
-            if user.is_authenticated:
-                return redirect('menu')  # Redirige vers les fonctionnalités supplémentaires si le mot de passe est correct
-            else:
-                # Si l'utilisateur est authentifié mais pas connecté (ce qui ne devrait pas se produire normalement)
-                return redirect('connect')  # Rediriger vers la page d'accueil
+        user = request.user
+        if user.check_password(entered_password):
+            return redirect('menu')  # Redirige vers les fonctionnalités supplémentaires si le mot de passe est correct
         else:
             # Afficher un message d'erreur si le mot de passe est incorrect
             return render(request, 'dashboard/incorrect_pass.html')
