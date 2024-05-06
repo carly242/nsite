@@ -20,7 +20,7 @@
                 <div class="card-header">
                     <i class="fas fa-table"></i>
                     List Of Users
-                    <a  class="btn btn-sm btn-success" href="{% url 'create_user_form' %}" style="padding: 8px; float: right; background-color: green; color: white;">Add User</a>
+                    <a  class="btn btn-sm btn-success" href="" style="padding: 8px; float: right; background-color: green; color: white;">Add User</a>
                 </div>
                 <div class="card-body">
                     {% for message in messages %}
@@ -61,7 +61,7 @@
                  </td>
                  
                 <td>
-                <a href=""><button type="button" class="btn btn-warning"> Edit</button></a>
+                <a href="{% url 'aeuser' user.pk %}"><button type="button" class="btn btn-warning"> Edit</button></a>
         </td>
         <td>
           <a href=""><button type="button" class="btn btn-danger"> Delete</button></a></td>

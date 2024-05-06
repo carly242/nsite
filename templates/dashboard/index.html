@@ -46,7 +46,7 @@
                 <li>
                     <h3>{{ user_profile.city |default:"None"}}</h3>
                     <p>Adress</p>
-                    <a href="https://www.google.com/maps/place/La+Plancha/@14.6701989,-17.4339934,17z/data=!3m1!4b1!4m6!3m5!1s0xec10b6c0ddf9641:0x662b72b6f5cef6f0!8m2!3d14.6701989!4d-17.4339934!16s%2Fg%2F11cjhjr4xc?entry=ttu" class="lien"><i class="fas fa-map-marker-alt"></i></a>
+                    <a href="{{ user_profile.adress_link |default_if_none:'#' |safe }}" class="lien"><i class="fas fa-map-marker-alt"></i></a>
                 </li>
                 <li>
                     <h3>{{ user_profile.website |default:"None"}}</h3>

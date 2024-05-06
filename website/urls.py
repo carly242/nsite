@@ -68,6 +68,8 @@ urlpatterns =[
     #path('create_user_form/', views.create_user_form, name='create_user_form'),
     path('create_user/', CreateUserView.as_view(), name='create_user'),
     path('wluser/', ListUserView.as_view(), name='wluser'),
+    path('aeuser/<int:pk>', AEditUser.as_view(), name='aeuser'),
+
 
 ]
 

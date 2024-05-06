@@ -9,7 +9,7 @@ from django.utils.translation import gettext as _
 class UserForm(forms.ModelForm):
     class Meta:
         model = User
-        fields = ['name', 'function','email','email_bureau', 'office_number', 'phone_number', 'city', 'photo','website']
+        fields = ['name', 'function','email','email_bureau', 'office_number', 'phone_number', 'city','adress_link', 'photo','website']
         
     
 

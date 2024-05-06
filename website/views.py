@@ -189,7 +189,8 @@ def edit_profile(request):
             'function': user_profile.function if user_profile.function else 'Function',
             'email': user_profile.email if user_profile.email else 'Email',
             'email_bureau': user_profile.email_bureau if user_profile.email_bureau else 'Office Email',
-            'city': user_profile.city if user_profile.city else 'Address',
+            'city': user_profile.city if user_profile.city else 'adress',
+            'adress_link': user_profile.adress_link if user_profile.adress_link else '#',
             'phone_number': user_profile.phone_number if user_profile.phone_number else 'Phone Number',
             'office_number': user_profile.office_number if user_profile.office_number else 'Office Number',
             'website': user_profile.website if user_profile.website else 'Website',
@@ -542,3 +543,12 @@ def create_user(request):
     else:
         return redirect('create_user_form')
 """  
+
+
+
+class AEditUser(SuccessMessageMixin, UpdateView): 
+    model = User
+    form_class = UserForm
+    template_name = 'admin/edit_user.html'
+    success_url = reverse_lazy('wluser')
+    success_message = "Data successfully updated"
