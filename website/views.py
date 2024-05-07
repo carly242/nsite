@@ -35,6 +35,7 @@ from django.http import HttpResponse
 from django.shortcuts import get_object_or_404
 import base64
 
+
 def download_vcard(request, slug):
     # Obtenir les informations du profil
     user_profile = get_object_or_404(User, slug=slug)
@@ -44,26 +45,30 @@ def download_vcard(request, slug):
     vcard_data += 'VERSION:3.0\n'
     vcard_data += 'FN:' + user_profile.name + '\n'  # Nom complet
     vcard_data += 'EMAIL:' + user_profile.email + '\n'  # Email
-    vcard_data += 'Email bureau:' + user_profile.email_bureau + '\n'  # Nom complet
-    vcard_data += 'Numero:' + user_profile.phone_number + '\n'
-    vcard_data += 'Numero Bureau:' + user_profile.office_number + '\n'
-    # Ajoutez d'autres champs du profil ici
-    if user_profile.photo and hasattr(user_profile.photo, 'file'):
-        # Récupérer le contenu de l'image sous forme de bytes
-        photo_data = user_profile.photo.read()
-        # Convertir le contenu de l'image en base64
-        photo_base64 = base64.b64encode(photo_data).decode('utf-8')
-        # Définir le type de contenu de l'image
-        photo_content_type = 'image/jpeg'  # Remplacez par le type de contenu approprié
-        vcard_data += 'PHOTO;ENCODING=BASE64;TYPE=' + photo_content_type + ':\n'
-        vcard_data += photo_base64 + '\n'  # Photo
-    # Ajouter le reste des champs seulement si une photo est présente
+    vcard_data += 'EMAIL;TYPE=INTERNET:' + user_profile.email_bureau + '\n'  # Email bureau
+    vcard_data += 'TEL;TYPE=CELL:' + user_profile.phone_number + '\n'  # Numéro de téléphone mobile
+    vcard_data += 'TEL;TYPE=WORK:' + user_profile.office_number + '\n'  # Numéro de téléphone bureau
+
+    try:
+        if user_profile.photo and hasattr(user_profile.photo, 'file'):
+            # Si l'utilisateur a une photo, lisez-la et encodez-la en base64
+            photo_data = user_profile.photo.read()
+            photo_base64 = base64.b64encode(photo_data).decode('utf-8')
+            photo_content_type = 'image/jpeg'  # Remplacez par le type de contenu approprié
+            vcard_data += 'PHOTO;ENCODING=BASE64;TYPE=' + photo_content_type + ':\n'
+            vcard_data += photo_base64 + '\n'  # Photo
+    except FileNotFoundError:
+        pass  # Si le fichier photo n'est pas trouvé, continuez sans ajouter de photo à la vCard
+
+    # Ajoutez le reste des champs et fermez la vCard
     vcard_data += 'END:VCARD'
 
     # Créez une réponse HTTP avec les données vCard
     response = HttpResponse(vcard_data, content_type='text/vcard')
     response['Content-Disposition'] = 'attachment; filename="contact.vcf"'
     return response
+
+
 
 
 
@@ -236,7 +241,7 @@ def login_or_functions(request):
         # Si l'utilisateur n'est pas connecté du tout, redirigez-le vers la page de connexion.
         return redirect('connect')
 
-
+@login_required
 def check_password_for_fonctionnalite(request):
     if request.method == 'POST':
         entered_password = request.POST.get('password')
@@ -247,13 +252,9 @@ def check_password_for_fonctionnalite(request):
             # Afficher un message d'erreur si le mot de passe est incorrect
             return render(request, 'dashboard/incorrect_pass.html')
     else:
-        if request.user.is_authenticated:
-            # Si l'utilisateur est connecté, afficher le formulaire de saisie du mot de passe
-            return render(request, 'dashboard/checkpass.html')
-        else:
-            # Si l'utilisateur n'est pas connecté, rediriger vers la page d'accueil
-            return redirect('connect')  # Rediriger vers la page d'accueil
-    
+         pass
+     
+@login_required
 def check_password_for_menu(request):
     if request.method == 'POST':
         entered_password = request.POST.get('password')
@@ -264,12 +265,7 @@ def check_password_for_menu(request):
             # Afficher un message d'erreur si le mot de passe est incorrect
             return render(request, 'dashboard/incorrect_pass.html')
     else:
-        if request.user.is_authenticated:
-            # Si l'utilisateur est connecté, afficher le formulaire de saisie du mot de passe
-            return render(request, 'dashboard/check_menu.html')
-        else:
-            # Si l'utilisateur n'est pas connecté, rediriger vers la page d'accueil
-            return redirect('connect')  # Rediriger vers la page d'accueil
+         pass
 
 
 

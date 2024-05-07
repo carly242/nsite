@@ -23,12 +23,12 @@ class User(AbstractUser):
     name = models.CharField(max_length=100, null=True, default="your name")
     function = models.CharField(max_length=100, null=True, default="your name")
     email = models.CharField(max_length=100, null=True, default="email")
-    email_bureau = models.CharField(max_length=100, null=True, default="office number")
+    email_bureau = models.CharField(max_length=100, null=True, default="office Mail")
     city = models.CharField(max_length=100, null=True, default="address")
     adress_link = models.CharField(max_length=5000, null=True)
 
-    phone_number = models.CharField(max_length=100, null=True, default="your name")
-    office_number = models.CharField(max_length=100, null=True, default="office mail")
+    phone_number = models.CharField(max_length=100, null=True, default="number")
+    office_number = models.CharField(max_length=100, null=True, default="office number")
     website = models.CharField(max_length=500, blank=True, null=True, default="website")
     
     slug = models.SlugField(unique=True, blank=True)
