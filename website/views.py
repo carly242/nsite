@@ -254,6 +254,10 @@ def check_password_for_fonctionnalite(request):
     else:
         # Si la méthode de la requête n'est pas POST, renvoyer une réponse HTTP 405 Method Not Allowed
         return HttpResponseNotAllowed(['POST'])
+    
+
+from django.http import HttpResponseNotAllowed
+
 @login_required
 def check_password_for_menu(request):
     if request.method == 'POST':
@@ -264,8 +268,13 @@ def check_password_for_menu(request):
         else:
             # Afficher un message d'erreur si le mot de passe est incorrect
             return render(request, 'dashboard/incorrect_pass.html')
+    elif request.method == 'GET':
+        # Si la requête est de type GET, retournez simplement le formulaire pour entrer le mot de passe
+        return render(request, 'dashboard/check_menu.html')
     else:
-         return HttpResponseNotAllowed(['POST'])
+        # Si la requête n'est ni de type POST ni de type GET, retournez une réponse HTTP 405 Méthode non autorisée
+        return HttpResponseNotAllowed(['POST', 'GET'])
+
 
 
 
