@@ -31,9 +31,13 @@ from django.contrib import messages
 
 from django.shortcuts import render
 
+from django.http import HttpResponse
+from django.shortcuts import get_object_or_404
+import base64
+
 def download_vcard(request, slug):
     # Obtenir les informations du profil
-    user_profile = get_object_or_404(User, slug=slug)# Remplacez cela par la logique pour obtenir les informations du profil
+    user_profile = get_object_or_404(User, slug=slug)
     
     # Générez les données vCard
     vcard_data = 'BEGIN:VCARD\n'
@@ -44,7 +48,7 @@ def download_vcard(request, slug):
     vcard_data += 'Numero:' + user_profile.phone_number + '\n'
     vcard_data += 'Numero Bureau:' + user_profile.office_number + '\n'
     # Ajoutez d'autres champs du profil ici
-    if user_profile.photo:
+    if user_profile.photo and hasattr(user_profile.photo, 'file'):
         # Récupérer le contenu de l'image sous forme de bytes
         photo_data = user_profile.photo.read()
         # Convertir le contenu de l'image en base64
@@ -53,6 +57,7 @@ def download_vcard(request, slug):
         photo_content_type = 'image/jpeg'  # Remplacez par le type de contenu approprié
         vcard_data += 'PHOTO;ENCODING=BASE64;TYPE=' + photo_content_type + ':\n'
         vcard_data += photo_base64 + '\n'  # Photo
+    # Ajouter le reste des champs seulement si une photo est présente
     vcard_data += 'END:VCARD'
 
     # Créez une réponse HTTP avec les données vCard
@@ -247,7 +252,7 @@ def check_password_for_fonctionnalite(request):
             return render(request, 'dashboard/checkpass.html')
         else:
             # Si l'utilisateur n'est pas connecté, rediriger vers la page d'accueil
-            return redirect('home')  # Rediriger vers la page d'accueil
+            return redirect('connect')  # Rediriger vers la page d'accueil
     
 def check_password_for_menu(request):
     if request.method == 'POST':

@@ -49,11 +49,9 @@
                                 <tr>
                                     <td>{{ forloop.counter }}</td>
                                     <td>{{ user.username }}</td>
-                                    <td>{% if user.is_client == True %}
+                                    <td>
                                       <p>Client</p>
-                                    {% else%}
-                                      <p>Admin</p>
-                                      {% endif %}
+                                    
                                     </td>
                                     <td>{{ user.email }}</td>
                                     <td>
