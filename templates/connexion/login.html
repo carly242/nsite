@@ -38,18 +38,19 @@
 
                 </form>
 
-                <!-- Ajout du message d'erreur -->
-                {% if messages %}
-                <div class="messages">
-                    {% for message in messages %}
-                    <div class="error-message">{{ message }}</div>
-                    {% endfor %}
-                </div>
-                {% endif %}
-
+             
             </div>
         
         </div>
+           <!-- Ajout du message d'erreur -->
+           {% if messages %}
+           <div class="messages">
+               {% for message in messages %}
+               <div class="error-message">{{ message }}</div>
+               {% endfor %}
+           </div>
+           {% endif %}
+
 
     </div>
 
@@ -64,7 +65,15 @@
           this.classList.toggle('fa-eye-slash');
         });
       </script>
-
+<style>
+    .messages {
+        position: absolute;
+        top: 20px;
+        left: 50%;
+        transform: translateX(-50%);
+        z-index: 1000; /* Assurez-vous que les messages d'erreur sont au-dessus du reste du contenu */
+    }
+</style>
 </body>
 </html>
 
