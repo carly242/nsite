@@ -34,7 +34,7 @@ from django.shortcuts import render
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404
 import base64
-from django.core.files.storage import FieldFileMissingError
+from django.core.files.storage import FileNotFoundError
 
 
 def download_vcard(request, slug):
@@ -58,7 +58,7 @@ def download_vcard(request, slug):
             photo_content_type = 'image/jpeg'  # Remplacez par le type de contenu approprié
             vcard_data += 'PHOTO;ENCODING=BASE64;TYPE=' + photo_content_type + ':\n'
             vcard_data += photo_base64 + '\n'  # Photo
-    except FieldFileMissingError:
+    except FileNotFoundError:
         pass  # Si le fichier photo n'est pas trouvé, continuez sans ajouter de photo à la vCard
 
     # Ajoutez le reste des champs et fermez la vCard
