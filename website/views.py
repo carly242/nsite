@@ -34,7 +34,6 @@ from django.shortcuts import render
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404
 import base64
-from django.core.files.storage import FileNotFoundError
 
 
 def download_vcard(request, slug):
