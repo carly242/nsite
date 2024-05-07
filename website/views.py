@@ -6,7 +6,7 @@ from django.contrib.messages.views import SuccessMessageMixin
 from django.contrib.auth.hashers import make_password
 from django.contrib import auth, messages
 from django.contrib.auth.decorators import login_required
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseNotAllowed
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import  ListView, UpdateView, DeleteView, CreateView
 from django.views import generic
@@ -252,8 +252,8 @@ def check_password_for_fonctionnalite(request):
             # Afficher un message d'erreur si le mot de passe est incorrect
             return render(request, 'dashboard/incorrect_pass.html')
     else:
-         pass
-     
+        # Si la méthode de la requête n'est pas POST, renvoyer une réponse HTTP 405 Method Not Allowed
+        return HttpResponseNotAllowed(['POST'])
 @login_required
 def check_password_for_menu(request):
     if request.method == 'POST':
@@ -265,7 +265,7 @@ def check_password_for_menu(request):
             # Afficher un message d'erreur si le mot de passe est incorrect
             return render(request, 'dashboard/incorrect_pass.html')
     else:
-         pass
+         return HttpResponseNotAllowed(['POST'])
 
 
 
