@@ -113,7 +113,7 @@ def deconnect(request):
     if 'user_slug' in request.session:
         del request.session['user_slug']  # Supprimer le slug de la session
     messages.error(request, "Veillez vous conncter")
-    return redirect('connect')
+    return redirect('home')
 
 def create(request):
     return render(request, 'connexion/signup.html')
@@ -135,7 +135,7 @@ def signup(request):
         user = User.objects.create_user(username=username, email=email, password=password)
 
         messages.success(request, 'Compte créé avec succès.')
-        return redirect('connect')
+        return redirect('home')
     else:
         return render(request, 'connexion/signup.html')
 
@@ -175,7 +175,7 @@ def view_profile(request, slug=None):
         user_profile = request.session.get('current_user_profile', None)
         if user_profile is None:
             # Gérer le cas où aucun utilisateur n'est connecté ou s'il n'y a pas de profil enregistré dans la session
-            return redirect(reverse('connect'))  # Rediriger vers la page de connexion par exemple
+            return redirect(reverse('home'))  # Rediriger vers la page de connexion par exemple
 
     return render(request, 'dashboard/index.html', {'user_profile': user_profile})
 
@@ -225,7 +225,7 @@ def login_or_edit_profile(request):
             return redirect(reverse('edit_profile'))
     else:
         # Si l'utilisateur n'est pas connecté du tout, redirigez-le vers la page de connexion.
-        return redirect('connect')
+        return redirect('home')
 
 
 def login_or_functions(request):
@@ -239,7 +239,7 @@ def login_or_functions(request):
             return redirect(reverse('fonctionalite'))
     else:
         # Si l'utilisateur n'est pas connecté du tout, redirigez-le vers la page de connexion.
-        return redirect('connect')
+        return redirect('home')
 
 @login_required
 def check_password_for_fonctionnalite(request):
@@ -256,7 +256,7 @@ def check_password_for_fonctionnalite(request):
         return HttpResponseNotAllowed(['POST'])
     
 
-from django.http import HttpResponseNotAllowed
+
 
 @login_required
 def check_password_for_menu(request):

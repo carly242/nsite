@@ -6,7 +6,7 @@ from django.contrib.auth import views as auth_views
 from .views import connect, connect, deconnect, create, signup
 urlpatterns =[
     
-     path('', connxeion, name='connect'),
+     path('', connxeion, name='home'),
      path('Connected/', connect, name='Connected'),
      path('deconnect/', deconnect, name='deconnect'),
      path('create/', create, name='create'),
