@@ -17,10 +17,10 @@ EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
-EMAIL_HOST_USER = 'carlybivihou8@gmail.com'
-EMAIL_HOST_PASSWORD = 'pwhy adjn hagb zdhw'
+EMAIL_HOST_USER = 'w.01infocontact@gmail.com'
+EMAIL_HOST_PASSWORD = 'nrbh egok azev lxen'
 EMAIL_USE_TLS = True
-DEFAULT_FROM_EMAIL = 'carlybivihou8@gmail.com'
+DEFAULT_FROM_EMAIL = 'w.01infocontact@gmail.com'
 
 SESSION_COOKIE_SECURE = True
 SESSION_EXPIRE_AT_BROWSER_CLOSE = True
@@ -160,9 +160,8 @@ STATIC_URL = 'static/'
 
 AUTH_USER_MODEL = 'website.User'
 
-STATICFILES_DIRS = [
-    os.path.join('C:\\Users\\HP\\Desktop\\wsite\\static')
-]
+STATIC_ROOT = 'C:\\Users\\HP\\Desktop\\wsite\\static'
+
 
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'static'),
