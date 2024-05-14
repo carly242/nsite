@@ -165,9 +165,7 @@ STATICFILES_DIRS = [
     'C:\\Users\\HP\\Desktop\\wsite\\static',  # Répertoire supplémentaire pour les fichiers statiques
 ]
 
-STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'static'),
-]
+
 
 
 # Chemin où Django collecte les fichiers statiques pour la production
