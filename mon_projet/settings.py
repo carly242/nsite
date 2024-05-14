@@ -161,7 +161,8 @@ STATIC_URL = 'static/'
 AUTH_USER_MODEL = 'website.User'
 
 STATICFILES_DIRS = [
-    os.path.join('C:\\Users\\HP\\Desktop\\wsite\\static')
+    os.path.join(BASE_DIR, 'static'),  # Répertoire pour les fichiers statiques de votre projet Django
+    'C:\\Users\\HP\\Desktop\\wsite\\static',  # Répertoire supplémentaire pour les fichiers statiques
 ]
 
 STATICFILES_DIRS = [
