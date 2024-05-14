@@ -76,9 +76,7 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = 'mon_projet.urls'
-TEMPLATE_DIRS = [
-    os.path.join(BASE_DIR, 'templates'),
-]
+
 
 TEMPLATES = [
     {
@@ -168,7 +166,6 @@ STATICFILES_DIRS = [
 
 
 # Chemin où Django collecte les fichiers statiques pour la production
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
 # Répertoires où Django recherche des fichiers statiques supplémentaires pendant le développement
 
