@@ -160,12 +160,20 @@ STATIC_URL = 'static/'
 
 AUTH_USER_MODEL = 'website.User'
 
-STATIC_ROOT = 'C:\\Users\\HP\\Desktop\\wsite\\static'
-
+STATICFILES_DIRS = [
+    os.path.join('C:\\Users\\HP\\Desktop\\wsite\\static')
+]
 
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'static'),
 ]
+
+
+# Chemin où Django collecte les fichiers statiques pour la production
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+
+# Répertoires où Django recherche des fichiers statiques supplémentaires pendant le développement
+
 
 
 # Default primary key field type
