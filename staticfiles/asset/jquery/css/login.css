@@ -1,7 +1,6 @@
 /* LOGIN FORM */
 
 .login {
-    background-image: url('C:/S_project/Bproject/static/bookstore/css/li.jpg');
     background: var(--darkened-bg);
     height: auto;
 }

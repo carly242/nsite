@@ -73,6 +73,8 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
+
 ]
 
 ROOT_URLCONF = 'mon_projet.urls'
@@ -162,10 +164,13 @@ STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'static'),  # Répertoire pour les fichiers statiques de votre projet Django
 ]
 
+# Définissez STATICFILES_STORAGE sur WhiteNoise
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 
 
 # Chemin où Django collecte les fichiers statiques pour la production
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
 # Répertoires où Django recherche des fichiers statiques supplémentaires pendant le développement
 
