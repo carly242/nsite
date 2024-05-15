@@ -1,10 +1,13 @@
 from django.urls import path, include
 
+
 from .views import *
 from .views import connect, connect, deconnect, create, signup
 from django.contrib.auth import views as auth_views 
 from .views import connect, connect, deconnect, create, signup
 urlpatterns =[
+  
+  
     
      path('', connxeion, name='home'),
      path('Connected/', connect, name='Connected'),
