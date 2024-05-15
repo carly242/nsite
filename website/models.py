@@ -58,4 +58,4 @@ def get_current_user(request):
 class Document(models.Model):
     title = models.CharField(max_length=100)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    pdf = models.FileField(upload_to='media/PDF/')
+    pdf = models.FileField(upload_to='PDF/')
