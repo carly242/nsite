@@ -48,7 +48,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-kntsmnn!0gg*k0b#t+)p+6(xfolf^pyja=teyz23vkq+p%r341'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ['*']
 
@@ -155,24 +155,20 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.0/howto/static-files/
+AUTH_USER_MODEL = 'website.User'
 
 STATIC_URL = '/static/'
 
-AUTH_USER_MODEL = 'website.User'
 
-STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'static'),  # Répertoire pour les fichiers statiques de votre projet Django
-]
+if DEBUG:
 
+    STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
 
-MEDIA_ROOT = os.path.join(BASE_DIR, 'photos')
-# Définissez STATICFILES_STORAGE sur WhiteNoise
-#STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+else:
 
+    STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
-
-# Chemin où Django collecte les fichiers statiques pour la production
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 # Répertoires où Django recherche des fichiers statiques supplémentaires pendant le développement
 

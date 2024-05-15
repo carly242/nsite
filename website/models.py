@@ -19,7 +19,7 @@ from django.utils.text import slugify
 class User(AbstractUser):
     is_admin = models.BooleanField(default=False)
     is_client = models.BooleanField(default=False)
-    photo = models.ImageField(upload_to='photos/', null=True, blank=True)
+    photo = models.ImageField(upload_to='media/photos/', null=True, blank=True)
     name = models.CharField(max_length=100, null=True, default="your name")
     function = models.CharField(max_length=100, null=True, default="your name")
     email = models.CharField(max_length=100, null=True, default="email")
