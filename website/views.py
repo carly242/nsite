@@ -149,22 +149,6 @@ from django.urls import reverse
 
     # Renvoyez ces valeurs dans le contexte de votre template
 
-
-
-
-
-@login_required
-def client(request):
-	return render(request, 'dashboard/finances.html')
-
-
-
-
-
-
-from django.shortcuts import get_object_or_404, render
-from .models import User
-
 def view_profile(request, slug=None):
     if slug is not None:
         user_profile = get_object_or_404(User, slug=slug)
@@ -183,6 +167,22 @@ def view_profile(request, slug=None):
 
 
 
+
+
+
+
+
+@login_required
+def client(request):
+	return render(request, 'dashboard/finances.html')
+
+
+
+
+
+
+from django.shortcuts import get_object_or_404, render
+from .models import User
 
 @login_required
 def edit_profile(request):
@@ -247,7 +247,9 @@ def check_password_for_fonctionnalite(request):
         entered_password = request.POST.get('password')
         user = request.user
         if user.check_password(entered_password):
-            return redirect('edit_profile')  # Redirige vers les fonctionnalités supplémentaires si le mot de passe est correct
+            if user == request.user:
+
+             return redirect('edit_profile')  # Redirige vers les fonctionnalités supplémentaires si le mot de passe est correct
         else:
             # Afficher un message d'erreur si le mot de passe est incorrect
             return render(request, 'dashboard/incorrect_pass.html')
@@ -264,7 +266,9 @@ def check_password_for_menu(request):
         entered_password = request.POST.get('password')
         user = request.user
         if user.check_password(entered_password):
-            return redirect('menu')  # Redirige vers les fonctionnalités supplémentaires si le mot de passe est correct
+            if user == request.user:
+
+             return redirect('menu')  # Redirige vers les fonctionnalités supplémentaires si le mot de passe est correct
         else:
             # Afficher un message d'erreur si le mot de passe est incorrect
             return render(request, 'dashboard/incorrect_pass.html')
