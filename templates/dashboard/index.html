@@ -22,34 +22,34 @@
                 
                 <li>
                     <h3> {{ user_profile.phone_number|default:"Your Moblie Number" }}</h3>
-                    <p>Mobile number</p>
+                    <p>Numero Mobile</p>
                     <i class="fas fa-mobile-alt"></i>
 
                 </li>
                 <li>
                     <h3> {{ user_profile.office_number|default:"None" }}</h3>
-                    <p>Office number</p>
+                    <p>Numero Bureau</p>
                     <i class="fas fa-mobile-alt"></i>
 
                 </li>
                 <li>
                     <h3>{{ user_profile.email |default:"None"}}</h3>
-                    <p>Email address</p>
+                    <p>Email Mobile</p>
                     <i class="fas fa-envelope"></i>
                 </li>
                 <li>
                     <h3>{{ user_profile.email_bureau |default:"None"}}</h3>
-                    <p>Email address</p>
+                    <p>Email Bureau</p>
                     <i class="fas fa-envelope"></i>
                 </li>
                 <li>
                     <h3>{{ user_profile.city |default:"None"}}</h3>
-                    <p>Adress</p>
+                    <p>Adresse</p>
                     <a href="{{ user_profile.adress_link |default_if_none:'#' |safe }}" class="lien"><i class="fas fa-map-marker-alt"></i></a>
                 </li>
                 <li>
                     <h3>{{ user_profile.website |default:"None"}}</h3> 
-                    <p>Website address</p>
+                    <p>Site web</p>
                     <i class="fas fa-globe-americas"></i>
                 </li>
             </ul>
