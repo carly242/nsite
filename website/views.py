@@ -373,20 +373,24 @@ def aabook_form(request):
 @login_required
 def aabook(request):
     if request.method == 'POST':
-        title = request.POST.get('title')
-        pdf = request.FILES.get('pdf')
-        current_user = request.user
+        form = DocumentForm(request.POST, request.FILES)
+        if form.is_valid():
+            title = form.cleaned_data['title']
+            pdf = form.cleaned_data['pdf']
+            current_user = request.user
 
-        # Création d'un document lié à l'utilisateur actuel
-        document = Document(title=title, pdf=pdf, user=current_user)
-        document.save()
-        
-        messages.success(request, 'Ajout réussi')
-        return redirect('albook')  # Rediriger vers la liste des documents après ajout
+            # Création d'un document lié à l'utilisateur actuel
+            document = Document(title=title, pdf=pdf, user=current_user)
+            document.save()
+            
+            messages.success(request, 'Ajout réussi')
+            return redirect('albook')  # Rediriger vers la liste des documents après ajout
+        else:
+            messages.error(request, 'Erreur lors de l\'ajout du document')
+            return render(request, 'dashboard/add_pdf.html', {'form': form})  # Afficher à nouveau le formulaire avec les erreurs
     else:
-        messages.error(request, 'Erreur lors de l\'ajout du document')
-        return redirect('aabook_form')  # Rediriger vers le formulaire d'ajout de document en cas d'erreur
-
+        form = DocumentForm()
+        return render(request, 'dashboard/add_pdf.html', {'form': form})  # Afficher le formulaire pour la première fois
  
  
 

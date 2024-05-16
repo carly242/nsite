@@ -16,7 +16,7 @@ class UserForm(forms.ModelForm):
 class DocumentForm(forms.ModelForm):
     class Meta:
         model = Document
-        fields = ['title']
+        fields = ['title', 'pdf']
 
 
 from django.contrib.auth.forms import PasswordResetForm
